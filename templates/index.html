@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Price Predictor</title>
+    <style>
+        /* Basic Reset and Font Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Main container for the form */
+        .container {
+            width: 100%;
+            max-width: 700px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin: 20px 0;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1c2a48;
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        /* Form Grid Layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        /* Responsive grid for larger screens */
+        @media (min-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .form-group.full-width {
+                grid-column: 1 / -1;
+            }
+        }
+
+        /* Form Group and Label Styles */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Input and Select Field Styles */
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+
+        /* Submit Button Style */
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        }
+        
+        /* Result Display Section */
+        .result-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .result-section h2 {
+            font-size: 1.5rem;
+            color: #1c2a48;
+            font-weight: 600;
+        }
+
+        .result-price {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #28a745;
+            margin-top: 10px;
+        }
+        
+        .result-error {
+            font-size: 1rem;
+            color: #dc3545;
+            margin-top: 15px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="header">
+            <h1>Car Price Predictor</h1>
+            <p>Enter the car details below to get an estimated selling price.</p>
+        </div>
+
+        <form method="POST">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="Present_Price">Present Price (in Lakhs)</label>
+                    <input type="number" step="0.01" name="Present_Price" id="Present_Price" required class="form-input" placeholder="e.g., 5.59">
+                </div>
+
+                <div class="form-group">
+                    <label for="Kms_Driven">Kilometers Driven</label>
+                    <input type="number" name="Kms_Driven" id="Kms_Driven" required class="form-input" placeholder="e.g., 27000">
+                </div>
+
+                <div class="form-group">
+                    <label for="Owner">Number of Previous Owners</label>
+                    <input type="number" name="Owner" id="Owner" required class="form-input" placeholder="e.g., 0">
+                </div>
+
+                <div class="form-group">
+                    <label for="Car_Age">Age of the Car (in years)</label>
+                    <input type="number" name="Car_Age" id="Car_Age" required class="form-input" placeholder="e.g., 8">
+                </div>
+
+                <div class="form-group">
+                    <label for="Fuel_Type">Fuel Type</label>
+                    <select name="Fuel_Type" id="Fuel_Type" class="form-select">
+                        <option value="Petrol">Petrol</option>
+                        <option value="Diesel">Diesel</option>
+                        <option value="CNG">CNG</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="Seller_Type">Seller Type</label>
+                    <select name="Seller_Type" id="Seller_Type" class="form-select">
+                        <option value="Dealer">Dealer</option>
+                        <option value="Individual">Individual</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="Transmission">Transmission</label>
+                    <select name="Transmission" id="Transmission" class="form-select">
+                        <option value="Manual">Manual</option>
+                        <option value="Automatic">Automatic</option>
+                    </select>
+                </div>
+            </div>
+
+            <input type="submit" value="Predict Price" class="submit-btn">
+        </form>
+
+        <!-- Prediction Result Display -->
+        {% if predicted_price is not none or error %}
+            <div class="result-section">
+                {% if predicted_price is not none %}
+                    <h2>Predicted Selling Price:</h2>
+                    <p class="result-price">₹ {{ predicted_price }} Lakhs</p>
+                {% endif %}
+                {% if error %}
+                    <p class="result-error">{{ error }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
